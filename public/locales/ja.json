@@ -1,0 +1,86 @@
+{
+  "common": {
+    "loading": "読み込み中...",
+    "start": "開始",
+    "restart": "再開始",
+    "completed": "完了",
+    "failed": "失敗",
+    "rollDice": "サイコロを振る",
+    "rolling": "振っています...",
+    "moving": "移動中...",
+    "preparing": "準備中..."
+  },
+  "game": {
+    "title": "カップル飛行チェス",
+    "subtitle": "Love Flight Chess",
+    "selectMode": "ゲームモードを選択",
+    "modeDescription": "各モードで異なるインタラクティブ体験",
+    "redTurn": "🔴 赤プレイヤーのターン (飛行機 ✈️)",
+    "blueTurn": "🔵 青プレイヤーのターン (ヘリコプター 🚁)",
+    "redWin": "🎉 赤プレイヤーの勝利！",
+    "blueWin": "🎉 青プレイヤーの勝利！",
+    "backToHome": "ホームに戻る"
+  },
+  "modes": {
+    "normal": {
+      "name": "ノーマル",
+      "description": "友達や初回プレイヤーに最適"
+    },
+    "love": {
+      "name": "ロマンス",
+      "description": "恋愛中のカップルに最適"
+    },
+    "couple": {
+      "name": "カップル",
+      "description": "安定した関係のカップルに最適"
+    },
+    "advanced": {
+      "name": "アドバンス",
+      "description": "より刺激を求めるカップルに"
+    },
+    "intimate": {
+      "name": "プライベート",
+      "description": "プライベート空間のみ、18+コンテンツ"
+    },
+    "mixed": {
+      "name": "ミックス",
+      "description": "全モードのランダム組み合わせ"
+    }
+  },
+  "board": {
+    "start": "スタート",
+    "end": "ゴール",
+    "star": "ラッキー",
+    "trap": "トラップ"
+  },
+  "tasks": {
+    "challenge": "タスクチャレンジ",
+    "starTask": "⭐ ラッキースタータスク",
+    "trapTask": "💣 トラップタスク",
+    "collisionTask": "💥 衝突タスク",
+    "redExecute": "🔴 赤プレイヤーが実行",
+    "blueExecute": "🔵 青プレイヤーが実行",
+    "completedReward": "✅ 完了報酬：実行者が0-3マス前進",
+    "failedPenalty": "❌ 失敗ペナルティ：実行者が3-6マス後退",
+    "collisionCompletedReward": "✅ 完了報酬：実行者がその場に留まる",
+    "collisionFailedPenalty": "❌ 失敗ペナルティ：実行者がスタートに戻る",
+    "emptyQueue": "タスクキューが空です！休憩しましょう！"
+  },
+  "tips": {
+    "twoPlayers": "二人で交互に操作",
+    "faceToFace": "対面でのインタラクション",
+    "improveRelation": "関係を深める"
+  },
+  "toast": {
+    "redForward": "赤が{steps}マス前進！",
+    "blueForward": "青が{steps}マス前進！",
+    "redBackward": "赤が{steps}マス後退！",
+    "blueBackward": "青が{steps}マス後退！",
+    "redStay": "赤がタスクを完了しましたが、その場に留まります。",
+    "blueStay": "青がタスクを完了しましたが、その場に留まります。",
+    "redFailedToStart": "🔴 赤がタスクに失敗、スタートに戻ります！",
+    "blueFailedToStart": "🔵 青がタスクに失敗、スタートに戻ります！",
+    "redCompleted": "🔴 赤がタスクを完了、その場に留まります！",
+    "blueCompleted": "🔵 青がタスクを完了、その場に留まります！"
+  }
+}

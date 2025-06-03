@@ -1,0 +1,86 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "start": "Start",
+    "restart": "Restart",
+    "completed": "Completed",
+    "failed": "Failed",
+    "rollDice": "Roll Dice",
+    "rolling": "Rolling...",
+    "moving": "Moving...",
+    "preparing": "Preparing..."
+  },
+  "game": {
+    "title": "Couple Flight Chess",
+    "subtitle": "Love Flight Chess",
+    "selectMode": "Select Game Mode",
+    "modeDescription": "Each mode offers different interactive experiences",
+    "redTurn": "🔴 Red Player's Turn (Plane ✈️)",
+    "blueTurn": "🔵 Blue Player's Turn (Helicopter 🚁)",
+    "redWin": "🎉 Red Player Wins!",
+    "blueWin": "🎉 Blue Player Wins!",
+    "backToHome": "Back to Home"
+  },
+  "modes": {
+    "normal": {
+      "name": "Normal",
+      "description": "Perfect for friends and first-time players"
+    },
+    "love": {
+      "name": "Romance",
+      "description": "Perfect for couples in love"
+    },
+    "couple": {
+      "name": "Couple",
+      "description": "Perfect for stable relationships"
+    },
+    "advanced": {
+      "name": "Advanced",
+      "description": "For couples seeking more excitement"
+    },
+    "intimate": {
+      "name": "Intimate",
+      "description": "Private space only, 18+ content"
+    },
+    "mixed": {
+      "name": "Mixed",
+      "description": "Random combination of all modes"
+    }
+  },
+  "board": {
+    "start": "Start",
+    "end": "Finish",
+    "star": "Lucky",
+    "trap": "Trap"
+  },
+  "tasks": {
+    "challenge": "Task Challenge",
+    "starTask": "⭐ Lucky Star Task",
+    "trapTask": "💣 Trap Task",
+    "collisionTask": "💥 Collision Task",
+    "redExecute": "🔴 Red Player Executes",
+    "blueExecute": "🔵 Blue Player Executes",
+    "completedReward": "✅ Completion Reward: Executor moves forward 0-3 spaces",
+    "failedPenalty": "❌ Failure Penalty: Executor moves backward 3-6 spaces",
+    "collisionCompletedReward": "✅ Completion Reward: Executor stays in place",
+    "collisionFailedPenalty": "❌ Failure Penalty: Executor returns to start",
+    "emptyQueue": "Task queue is empty! Take a break!"
+  },
+  "tips": {
+    "twoPlayers": "Two players take turns",
+    "faceToFace": "Face-to-face interaction",
+    "improveRelation": "Improve relationship"
+  },
+  "toast": {
+    "redForward": "Red moves forward {steps} spaces!",
+    "blueForward": "Blue moves forward {steps} spaces!",
+    "redBackward": "Red moves backward {steps} spaces!",
+    "blueBackward": "Blue moves backward {steps} spaces!",
+    "redStay": "Red completed task but stays in place.",
+    "blueStay": "Blue completed task but stays in place.",
+    "redFailedToStart": "🔴 Red failed task, returns to start!",
+    "blueFailedToStart": "🔵 Blue failed task, returns to start!",
+    "redCompleted": "🔴 Red completed task, stays in place!",
+    "blueCompleted": "🔵 Blue completed task, stays in place!"
+  }
+}
