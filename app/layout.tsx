@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
+import "./seo-styles.css"
 import StructuredData from "./structured-data"
 
 export const metadata: Metadata = {
