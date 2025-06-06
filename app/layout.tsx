@@ -16,6 +16,26 @@ export const metadata: Metadata = {
   creator: "爱情飞行棋",
   publisher: "爱情飞行棋",
   robots: "index, follow",
+  icons: {
+    icon: [
+      {
+        url: "/images/logo.png",
+        type: "image/png",
+      },
+      {
+        url: "/favicon.png",
+        type: "image/png",
+      }
+    ],
+    shortcut: "/favicon.png",
+    apple: [
+      {
+        url: "/images/logo.png",
+        sizes: "180x180",
+        type: "image/png",
+      }
+    ],
+  },
   openGraph: {
     title:
       "情侣飞行棋 - 情趣互动游戏增进感情神器 | Couple Flight Chess - Interactive Romance Game | カップル飛行チェス - インタラクティブロマンスゲーム",
@@ -67,8 +87,10 @@ export default function RootLayout({
         <StructuredData />
         <link rel="canonical" href="https://cpfly.top" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/images/logo.png" />
+        <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/images/logo.png" />
         <meta name="theme-color" content="#ff6b9d" />
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2KTSBL1MK"></script>
