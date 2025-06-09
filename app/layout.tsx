@@ -6,13 +6,13 @@ import StructuredData from "./structured-data"
 
 export const metadata: Metadata = {
   title: {
-    default: "情侣飞行棋 | 情趣互动游戏增进感情神器 | 真心话大冒险挑战 - 爱情飞行棋",
-    template: "%s | 爱情飞行棋",
+    default: "情侣飞行棋游戏全集免费在线玩 | 情侣互动游戏手机版 | 真心话大冒险情趣桌游 - 爱情飞行棋",
+    template: "%s | 爱情飞行棋 - 情侣游戏专家",
   },
   description:
-    "还在为情侣约会玩什么发愁？爱情飞行棋来啦！融合经典飞行棋+真心话大冒险+趣味挑战，超多互动环节让感情迅速升温。情趣DIY设计，专属情侣礼物，异地恋也能甜蜜互动！点击了解玩法，开启欢乐时光！",
+    "【2025最新】情侣飞行棋游戏全集免费在线玩！融合经典飞行棋+真心话大冒险+情趣挑战任务，超多互动环节让感情迅速升温。支持手机版、电脑版在线游戏，情侣破冰神器，异地恋也能甜蜜互动！立即开玩，体验最火爆的情侣互动游戏！",
   keywords:
-    "情侣飞行棋,情侣桌游,情侣互动游戏,情趣情侣礼物,情人节礼物,恋爱游戏,增进感情的游戏,异地恋情侣游戏,情侣约会游戏,真心话大冒险,情侣破冰游戏,情侣升温游戏,couple flight chess,couple board game,couple interactive game,romantic couple gift,valentine gift,love game,relationship building game,long distance relationship game,couple date game,truth or dare,couple icebreaker game,couple bonding game,カップル飛行チェス,カップルボードゲーム,カップルインタラクティブゲーム,ロマンチックカップルギフト,バレンタインギフト,恋愛ゲーム,関係構築ゲーム,遠距離恋愛ゲーム,カップルデートゲーム,真実か挑戦か,カップルアイスブレーカーゲーム",
+    "情侣飞行棋,情侣飞行棋游戏全集,情侣飞行棋手机游戏,情侣飞行棋在线游戏,情侣互动游戏,情侣桌游,情趣情侣礼物,真心话大冒险,情侣破冰游戏,情侣升温游戏,恋爱游戏,增进感情的游戏,异地恋情侣游戏,情侣约会游戏,情侣小游戏,情侣游戏app,情侣游戏手机版,情侣游戏在线玩,双人游戏情侣,情侣互动小游戏,情侣挑战游戏,情侣任务游戏,情人节礼物,情侣礼物推荐,情侣娱乐游戏,couple flight chess,couple board game,couple interactive game,romantic couple gift,valentine gift,love game,relationship building game,long distance relationship game,couple date game,truth or dare,couple icebreaker game,couple bonding game",
   authors: [{ name: "爱情飞行棋" }],
   creator: "爱情飞行棋",
   publisher: "爱情飞行棋",
@@ -39,17 +39,17 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:
-      "情侣飞行棋 - 情趣互动游戏增进感情神器 | Couple Flight Chess - Interactive Romance Game | カップル飛行チェス - インタラクティブロマンスゲーム",
+      "情侣飞行棋游戏全集免费在线玩 - 最火爆的情侣互动游戏 | 手机版真心话大冒险",
     description:
-      "融合经典飞行棋+真心话大冒险+趣味挑战，超多互动环节让感情迅速升温。情趣DIY设计，专属情侣礼物！ | Classic flight chess + truth or dare + fun challenges, multiple interactive elements to quickly heat up your relationship. Creative DIY design, exclusive couple gift! | クラシック飛行チェス+真実か挑戦か+楽しいチャレンジ、複数のインタラクティブ要素で関係を素早く温める。クリエイティブDIYデザイン、専用カップルギフト！",
+      "【2025最新】情侣飞行棋游戏全集免费在线玩！融合经典飞行棋+真心话大冒险+情趣挑战，支持手机版、电脑版，情侣破冰神器，异地恋也能甜蜜互动！立即开玩最火爆的情侣游戏！",
     url: "https://cpfly.top",
-    siteName: "爱情飞行棋 | Love Flight Chess | ラブフライトチェス",
+    siteName: "爱情飞行棋 - 情侣游戏专家",
     images: [
       {
         url: "https://cpfly.top/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "情侣飞行棋 - 情趣互动游戏 | Couple Flight Chess - Interactive Romance Game | カップル飛行チェス - インタラクティブロマンスゲーム",
+        alt: "情侣飞行棋游戏全集 - 免费在线情侣互动游戏",
       },
     ],
     locale: "zh_CN",
@@ -57,9 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "情侣飞行棋 - 情趣互动游戏增进感情神器 | Couple Flight Chess | カップル飛行チェス",
+    title: "情侣飞行棋游戏全集免费在线玩 - 最火爆的情侣互动游戏",
     description:
-      "融合经典飞行棋+真心话大冒险+趣味挑战，超多互动环节让感情迅速升温！ | Classic flight chess + truth or dare + fun challenges! | クラシック飛行チェス+真実か挑戦か+楽しいチャレンジ！",
+      "【2025最新】情侣飞行棋游戏全集免费在线玩！融合经典飞行棋+真心话大冒险+情趣挑战，支持手机版、电脑版，立即开玩！",
     images: ["https://cpfly.top/images/twitter-image.jpg"],
   },
   alternates: {
@@ -73,6 +73,8 @@ export const metadata: Metadata = {
   other: {
     "baidu-site-verification": "your-baidu-verification-code",
     "360-site-verification": "your-360-verification-code",
+    "sogou_site_verification": "your-sogou-verification-code",
+    "shenma-site-verification": "your-shenma-verification-code",
   },
     generator: 'v0.dev'
 }
@@ -93,6 +95,16 @@ export default function RootLayout({
         <link rel="shortcut icon" type="image/png" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/images/logo.png" />
         <meta name="theme-color" content="#ff6b9d" />
+        
+        {/* 针对移动端搜索优化 */}
+        <meta name="mobile-web-compatible" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+        
+        {/* 百度移动适配 */}
+        <meta name="applicable-device" content="pc,mobile" />
+        <meta name="MobileOptimized" content="width" />
+        <meta name="HandheldFriendly" content="true" />
+        
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2KTSBL1MK"></script>
         <script
@@ -102,6 +114,15 @@ export default function RootLayout({
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-J2KTSBL1MK');
+        
+        // 百度统计
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?your-baidu-analytics-id";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
       `,
           }}
         />

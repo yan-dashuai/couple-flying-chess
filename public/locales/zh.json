@@ -40,7 +40,7 @@
     },
     "intimate": {
       "name": "私密版",
-      "description": "仅限私密空间，18+内容"
+      "description": "仅限私密空间"
     },
     "mixed": {
       "name": "组合版",
