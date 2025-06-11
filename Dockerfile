@@ -5,26 +5,21 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm run build
+RUN pnpm build
 
 # Stage 2: Production stage
 FROM node:20-alpine AS runner
 WORKDIR /app
-RUN corepack enable
 ENV NODE_ENV=production
 
-# Copy built artifacts (compatible with both output modes)
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-
-# Conditional copy for standalone mode
-RUN test -d /app/.next/standalone && \
-    cp -r /app/.next/standalone ./ || echo "Running in non-standalone mode"
-
-# Copy main files
+# 1. 确保使用了 standalone 输出 (确保有 next.config.mjs)
 COPY --from=builder /app/next.config.mjs ./
 
-EXPOSE 3000
+# 2. 复制 standalone 输出
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
 
-# Conditional run command
-CMD [ "sh", "-c", "if [ -f /app/server.js ]; then node server.js; else pnpm run start; fi" ]
+# 3. 使用 standalone 的启动命令
+EXPOSE 3000
+CMD ["node", "server.js"]
