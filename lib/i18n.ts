@@ -11,6 +11,7 @@ export interface Translations {
     rolling: string
     moving: string
     preparing: string
+    skipToHome: string
   }
   game: {
     title: string
@@ -22,6 +23,10 @@ export interface Translations {
     redWin: string
     blueWin: string
     backToHome: string
+    selectWinTask: string
+    winTasksTitle: string
+    winTaskExecution: string
+    celebrationMessage: string
   }
   modes: {
     normal: { name: string; description: string }

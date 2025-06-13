@@ -8,7 +8,8 @@
     "rollDice": "サイコロを振る",
     "rolling": "振っています...",
     "moving": "移動中...",
-    "preparing": "準備中..."
+    "preparing": "準備中...",
+    "skipToHome": "ホームに戻る"
   },
   "game": {
     "title": "カップル飛行チェス",
@@ -19,7 +20,11 @@
     "blueTurn": "🔵 青プレイヤーのターン (ヘリコプター 🚁)",
     "redWin": "🎉 赤プレイヤーの勝利！",
     "blueWin": "🎉 青プレイヤーの勝利！",
-    "backToHome": "ホームに戻る"
+    "backToHome": "ホームに戻る",
+    "selectWinTask": "勝利タスクを選んでお祝いしましょう！",
+    "winTasksTitle": "勝利タスク選択",
+    "winTaskExecution": "勝利タスク実行",
+    "celebrationMessage": "このタスクを完了して勝利をお祝いしましょう！"
   },
   "modes": {
     "normal": {

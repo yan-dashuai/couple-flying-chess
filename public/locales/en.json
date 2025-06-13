@@ -8,7 +8,8 @@
     "rollDice": "Roll Dice",
     "rolling": "Rolling...",
     "moving": "Moving...",
-    "preparing": "Preparing..."
+    "preparing": "Preparing...",
+    "skipToHome": "Skip to Home"
   },
   "game": {
     "title": "Couple Flight Chess",
@@ -19,7 +20,11 @@
     "blueTurn": "🔵 Blue Player's Turn (Helicopter 🚁)",
     "redWin": "🎉 Red Player Wins!",
     "blueWin": "🎉 Blue Player Wins!",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "selectWinTask": "Choose a victory task to celebrate!",
+    "winTasksTitle": "Victory Task Selection",
+    "winTaskExecution": "Victory Task Execution",
+    "celebrationMessage": "Complete this task to celebrate your victory!"
   },
   "modes": {
     "normal": {

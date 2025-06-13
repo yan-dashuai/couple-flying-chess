@@ -24,7 +24,7 @@ import type { JSX } from "react/jsx-runtime"
 import { type Language, type Translations, loadTranslations, interpolate } from "@/lib/i18n"
 import LanguageSelector from "./language-selector"
 
-type GameState = "start" | "playing" | "task" | "win" | "moving"
+type GameState = "start" | "playing" | "task" | "win" | "winTask" | "moving"
 type GameMode = "normal" | "love" | "couple" | "advanced" | "intimate" | "mixed"
 type PlayerColor = "red" | "blue"
 type TaskType = "star" | "trap" | "collision"
@@ -33,6 +33,11 @@ interface CurrentTask {
   description: string
   executor: PlayerColor
   target: PlayerColor
+}
+
+interface WinTaskOption {
+  id: number
+  description: string
 }
 
 // Shuffle function (Fisher-Yates)
@@ -91,6 +96,8 @@ export default function CoupleLudoGame() {
   const [isLoadingTasks, setIsLoadingTasks] = useState(false)
   const [language, setLanguage] = useState<Language>("zh")
   const [translations, setTranslations] = useState<Translations | null>(null)
+  const [winTaskOptions, setWinTaskOptions] = useState<WinTaskOption[]>([])
+  const [selectedWinTask, setSelectedWinTask] = useState<WinTaskOption | null>(null)
 
   useEffect(() => {
     const path = createBoardPath()
@@ -135,6 +142,23 @@ export default function CoupleLudoGame() {
     [translations],
   )
 
+  const generateWinTasks = useCallback(() => {
+    // 从当前任务队列中随机选择3个任务作为胜利任务选项
+    const availableTasks = taskQueue.length > 0 ? taskQueue : [
+      translations?.tasks.emptyQueue || "给对方一个温暖的拥抱",
+      "说出三个对方的优点",
+      "一起做一件浪漫的事"
+    ]
+    
+    const shuffled = shuffleArray([...availableTasks])
+    const winTasks: WinTaskOption[] = shuffled.slice(0, 3).map((task, index) => ({
+      id: index + 1,
+      description: task
+    }))
+    
+    setWinTaskOptions(winTasks)
+  }, [taskQueue, translations])
+
   const switchTurn = useCallback(() => {
     setCurrentPlayer((prev) => (prev === "red" ? "blue" : "red"))
   }, [])
@@ -158,6 +182,8 @@ export default function CoupleLudoGame() {
       if (newPosition === boardPath.length - 1) {
         setTimeout(() => {
           setWinner(player)
+          // 生成3个获胜任务选项
+          generateWinTasks()
           setGameState("win")
         }, 300)
         return
@@ -178,8 +204,29 @@ export default function CoupleLudoGame() {
         setTimeout(switchTurn, 300)
       }
     },
-    [boardPath, bluePosition, redPosition, switchTurn],
+    [boardPath, bluePosition, redPosition, switchTurn, generateWinTasks],
   )
+
+  // 处理胜利任务选择
+  const handleWinTaskSelect = useCallback((task: WinTaskOption) => {
+    setSelectedWinTask(task)
+    setGameState("winTask")
+  }, [])
+
+  // 完成胜利任务
+  const handleWinTaskComplete = useCallback(() => {
+    setGameState("win")
+    setSelectedWinTask(null)
+    setWinTaskOptions([])
+  }, [])
+
+  // 重新开始游戏
+  const restartFromWin = useCallback(() => {
+    setGameState("start")
+    setWinner(null)
+    setSelectedWinTask(null)
+    setWinTaskOptions([])
+  }, [])
 
   const movePlayerStep = useCallback(
     (targetPosition: number, player: PlayerColor, currentStepPos?: number) => {
@@ -213,6 +260,7 @@ export default function CoupleLudoGame() {
             // 最终位置在终点，玩家获胜
             setTimeout(() => {
               setWinner(player)
+              generateWinTasks()
               setGameState("win")
               setIsMoving(false)
             }, 300)
@@ -247,7 +295,7 @@ export default function CoupleLudoGame() {
       
       step()
     },
-    [redPosition, bluePosition, checkSpecialEvents],
+    [redPosition, bluePosition, checkSpecialEvents, generateWinTasks],
   )
 
   const movePlayer = useCallback(
@@ -757,15 +805,95 @@ export default function CoupleLudoGame() {
       )}
 
       {gameState === "win" && winner && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className="win-message">{winner === "red" ? translations.game.redWin : translations.game.blueWin}</div>
-            <button className="button" onClick={restartGame}>
-              <RotateCcw size={16} style={{ marginRight: "8px" }} /> {translations.common.restart}
-            </button>
+        <div className="modal win-modal">
+          <div className="win-card">
+            <div className="win-celebration">
+              <div className="confetti-container">
+                <div className="confetti"></div>
+                <div className="confetti"></div>
+                <div className="confetti"></div>
+                <div className="confetti"></div>
+                <div className="confetti"></div>
+              </div>
+              <div className="trophy-icon">
+                <Trophy size={60} />
+              </div>
+              <h1 className="win-title">
+                🎉 {winner === "red" ? translations.game.redWin : translations.game.blueWin} 🎉
+              </h1>
+              <p className="win-subtitle">{translations.game.selectWinTask || "选择一个胜利任务来庆祝吧！"}</p>
+            </div>
+            
+            <div className="win-tasks-container">
+              <h3 className="tasks-title">{translations.game.winTasksTitle || "胜利任务选择"}</h3>
+              <div className="win-tasks-grid">
+                {winTaskOptions.map((task, index) => (
+                  <div
+                    key={task.id}
+                    className={`win-task-card ${winner}-winner`}
+                    onClick={() => handleWinTaskSelect(task)}
+                  >
+                    <div className="task-number">{index + 1}</div>
+                    <div className="task-content">
+                      <Sparkles size={20} />
+                      <p>{task.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="win-actions">
+              <button className="skip-button" onClick={restartFromWin}>
+                <ArrowLeft size={16} />
+                {translations.common.skipToHome || "跳过回到首页"}
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {gameState === "winTask" && selectedWinTask && winner && (
+        <div className="modal win-task-modal">
+          <div className="win-task-execution-card">
+            <div className="task-header">
+              <Star size={32} className="task-star" />
+              <h2>{translations.game.winTaskExecution || "胜利任务执行"}</h2>
+            </div>
+            
+            <div className={`selected-task ${winner}-executor`}>
+              <div className="task-executor">
+                {winner === "red" ? translations.tasks.redExecute : translations.tasks.blueExecute}
+              </div>
+              <div className="task-description-box">
+                {selectedWinTask.description}
+              </div>
+            </div>
+            
+            <div className="celebration-message">
+              <Heart size={24} />
+              <p>{translations.game.celebrationMessage || "完成这个任务来庆祝你们的胜利！"}</p>
+            </div>
+            
+            <div className="win-task-actions">
+              <button 
+                className="complete-win-task-btn"
+                onClick={handleWinTaskComplete}
+              >
+                ✅ {translations.common.completed}
+              </button>
+              <button 
+                className="restart-btn"
+                onClick={restartFromWin}
+              >
+                <RotateCcw size={16} />
+                {translations.common.restart}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {toast && (
         <div className={`toast ${toast.type}`}>
           {toast.type === "success" ? <CheckCircle size={20} /> : <XCircle size={20} />}

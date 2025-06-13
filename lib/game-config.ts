@@ -78,43 +78,92 @@ export const createBoardPath = (): PathCell[] => {
     path[path.length - 1].direction = null
   }
 
-  // Randomly place 6 stars and 6 traps
+  // 获取可放置特殊格子的路径位置（排除起点、终点和它们附近的格子）
   const pathCellIndices: number[] = []
   for (let i = 0; i < path.length; i++) {
     if (path[i].type === "path") {
-      // Only consider default path cells
-      // Avoid placing special cells too close to start or end (e.g., not on cell 1 or path.length - 2)
-      if (i > 1 && i < path.length - 2) {
+      // 避免在起点和终点附近放置特殊格子
+      if (i > 2 && i < path.length - 3) {
         pathCellIndices.push(i)
       }
     }
   }
 
-  const shuffledPathIndices = shuffleArray(pathCellIndices)
+  const numStars = 12
+  const numTraps = 12
+  const totalSpecialCells = numStars + numTraps
 
-  const numStars = 8
-  const numTraps = 8
+  // 确保有足够的可用位置
+  if (pathCellIndices.length < totalSpecialCells) {
+    console.warn("警告：可用位置不足以放置所有特殊格子")
+  }
 
-  // Place Stars
-  for (let i = 0; i < numStars && i < shuffledPathIndices.length; i++) {
-    const starIndex = shuffledPathIndices[i]
-    if (path[starIndex]) {
-      path[starIndex].type = "star"
+  // 实现更均匀的分布策略
+  // 将路径分成多个区段，在每个区段中均匀分布特殊格子
+  const availablePositions = [...pathCellIndices]
+  const segmentCount = 6 // 将路径分成6个区段
+  const segmentSize = Math.floor(availablePositions.length / segmentCount)
+  
+  // 每个区段应该放置的特殊格子数量
+  const starsPerSegment = Math.floor(numStars / segmentCount)
+  const trapsPerSegment = Math.floor(numTraps / segmentCount)
+  const remainingStars = numStars % segmentCount
+  const remainingTraps = numTraps % segmentCount
+
+  const placedPositions = new Set<number>()
+
+  // 在每个区段中放置特殊格子
+  for (let segment = 0; segment < segmentCount; segment++) {
+    const segmentStart = segment * segmentSize
+    const segmentEnd = segment === segmentCount - 1 ? availablePositions.length : (segment + 1) * segmentSize
+    const segmentPositions = availablePositions.slice(segmentStart, segmentEnd)
+    
+    // 计算当前区段应该放置的数量
+    let currentSegmentStars = starsPerSegment + (segment < remainingStars ? 1 : 0)
+    let currentSegmentTraps = trapsPerSegment + (segment < remainingTraps ? 1 : 0)
+    
+    // 随机打乱当前区段的位置
+    const shuffledSegmentPositions = shuffleArray(segmentPositions)
+    
+    // 放置幸运星
+    for (let i = 0; i < currentSegmentStars && i < shuffledSegmentPositions.length; i++) {
+      const starIndex = shuffledSegmentPositions[i]
+      if (!placedPositions.has(starIndex) && path[starIndex]) {
+        path[starIndex].type = "star"
+        placedPositions.add(starIndex)
+      }
+    }
+    
+    // 放置陷阱
+    for (let i = 0; i < shuffledSegmentPositions.length && currentSegmentTraps > 0; i++) {
+      const trapIndex = shuffledSegmentPositions[i]
+      if (!placedPositions.has(trapIndex) && path[trapIndex] && path[trapIndex].type === "path") {
+        path[trapIndex].type = "trap"
+        placedPositions.add(trapIndex)
+        currentSegmentTraps--
+      }
     }
   }
 
-  // Place Traps, ensuring they don't overlap with stars
-  let trapsPlaced = 0
-  for (let i = numStars; i < shuffledPathIndices.length && trapsPlaced < numTraps; i++) {
-    const trapIndex = shuffledPathIndices[i]
-    if (path[trapIndex] && path[trapIndex].type === "path") {
-      // Ensure it's still a path cell
-      path[trapIndex].type = "trap"
-      trapsPlaced++
+  // 如果还有未放置的特殊格子，随机放置到剩余位置
+  const remainingPositions = availablePositions.filter(pos => !placedPositions.has(pos))
+  const shuffledRemainingPositions = shuffleArray(remainingPositions)
+  
+  let remainingStarsToPlace = numStars - Array.from(placedPositions).filter(pos => path[pos].type === "star").length
+  let remainingTrapsToPlace = numTraps - Array.from(placedPositions).filter(pos => path[pos].type === "trap").length
+  
+  for (let i = 0; i < shuffledRemainingPositions.length && (remainingStarsToPlace > 0 || remainingTrapsToPlace > 0); i++) {
+    const pos = shuffledRemainingPositions[i]
+    if (path[pos] && path[pos].type === "path") {
+      if (remainingStarsToPlace > 0) {
+        path[pos].type = "star"
+        remainingStarsToPlace--
+      } else if (remainingTrapsToPlace > 0) {
+        path[pos].type = "trap"
+        remainingTrapsToPlace--
+      }
     }
   }
-  // If not enough distinct spots from the initial shuffle (unlikely for 49 cells),
-  // the game will have fewer special cells, which is acceptable.
 
   return path
 }
