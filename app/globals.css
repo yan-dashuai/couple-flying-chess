@@ -2188,44 +2188,42 @@ main#app::-webkit-scrollbar {
   transform: scale(1.1);
 }
 
-/* 自定义模式创建器模态框 */
+/* 自定义模式创建器模态框 - 全新设计 */
 .custom-mode-modal {
-  z-index: 9999 !important;
-  padding: 8px;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
   display: flex;
   justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(4px);
+  align-items: flex-start;
+  z-index: 999999;
+  overflow: hidden;
 }
 
 .custom-mode-creator {
-  width: 90vw;
+  width: 100%;
+  height: 100%;
   max-width: 800px;
-  max-height: 90vh;
   background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border-radius: 1rem;
+  border-radius: 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modal-slide-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: none;
+  box-shadow: none;
+  animation: modal-fade-in 0.3s ease-out;
   position: relative;
-  z-index: 10000 !important;
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes modal-slide-in {
+@keyframes modal-fade-in {
   0% {
     opacity: 0;
-    transform: translateY(50px) scale(0.95);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -2233,26 +2231,32 @@ main#app::-webkit-scrollbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .creator-header h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
 }
 
 .close-creator {
-  padding: 0.5rem;
+  padding: 0.75rem;
   background: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 0.5rem;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.2s ease;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .close-creator:hover {
@@ -2261,36 +2265,10 @@ main#app::-webkit-scrollbar {
 }
 
 .creator-content {
-  padding: 2rem;
-  max-height: 60vh;
+  flex: 1;
+  padding: 1.5rem;
   overflow-y: auto;
   position: relative;
-}
-
-.creator-content::before {
-  content: "";
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 15px;
-  background: linear-gradient(to bottom, rgba(26, 26, 46, 1), transparent);
-  z-index: 10;
-  pointer-events: none;
-  margin-bottom: -15px;
-}
-
-.creator-content::after {
-  content: "";
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 15px;
-  background: linear-gradient(to top, rgba(26, 26, 46, 1), transparent);
-  z-index: 10;
-  pointer-events: none;
-  margin-top: -15px;
 }
 
 .creator-content::-webkit-scrollbar {
@@ -2311,6 +2289,115 @@ main#app::-webkit-scrollbar {
   background: rgba(255, 255, 255, 0.5);
 }
 
+.creator-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.create-btn,
+.cancel-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  justify-content: center;
+  min-height: 44px;
+  font-size: 1rem;
+}
+
+.create-btn {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: white;
+  flex: 1;
+}
+
+.create-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
+}
+
+.create-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.create-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex: 1;
+}
+
+.cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.cancel-btn:active {
+  transform: translateY(0);
+}
+
+/* 桌面端样式 */
+@media (min-width: 768px) {
+  .custom-mode-modal {
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .custom-mode-creator {
+    width: 90vw;
+    height: auto;
+    max-height: 90vh;
+    max-width: 800px;
+    border-radius: 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .creator-header {
+    padding: 1.5rem 2rem;
+  }
+  
+  .creator-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .creator-content {
+    padding: 2rem;
+    max-height: 60vh;
+  }
+  
+  .creator-actions {
+    padding: 1.5rem 2rem;
+    justify-content: flex-end;
+  }
+  
+  .create-btn,
+  .cancel-btn {
+    flex: none;
+    min-width: 120px;
+  }
+}
+
+/* 自定义模式创建器内容样式 */
 .basic-info-section {
   margin-bottom: 2rem;
 }
@@ -2633,294 +2720,22 @@ main#app::-webkit-scrollbar {
   transform: scale(1.05);
 }
 
-.creator-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  padding: 1.5rem 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.create-btn,
-.cancel-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  justify-content: center;
-}
-
-.create-btn {
-  background: linear-gradient(135deg, #34d399, #10b981);
-  color: white;
-}
-
-.create-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
-}
-
-.create-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.create-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.cancel-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.cancel-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 1);
-  transform: translateY(-1px);
-}
-
-.cancel-btn:active {
-  transform: translateY(0);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .custom-mode-modal {
-    padding: 4px;
-    align-items: flex-start;
-    padding-top: 20px;
-    z-index: 9999;
-  }
-  
-  .custom-mode-creator {
-    width: 95vw;
-    max-height: calc(100vh - 40px);
-    border-radius: 0.75rem;
-    margin-top: 0;
-    z-index: 10000;
-  }
-  
-  .creator-header {
-    padding: 1rem 1.5rem;
-  }
-  
-  .creator-header h2 {
-    font-size: 1.25rem;
-  }
-  
-  .creator-content {
-    padding: 1rem 1.5rem;
-    max-height: calc(100vh - 200px);
-  }
-  
-  .basic-info-section {
-    margin-bottom: 1.5rem;
-  }
-  
-  .input-group {
-    margin-bottom: 1rem;
-  }
-  
-  .input-group input {
-    padding: 0.875rem;
-    font-size: 1rem;
-    border-radius: 0.75rem;
-  }
-  
-  .task-selection-section h3 {
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
-  }
-  
-  .task-selection-section h4 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .load-tasks-btn {
-    width: 100%;
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .mode-tasks-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .mode-section-title {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-  }
-  
-  .tasks-list {
-    max-height: 150px;
-  }
-  
-  .task-item {
-    padding: 0.75rem;
-    font-size: 0.9rem;
-    border-radius: 0.5rem;
-    min-height: 44px;
-  }
-  
-  .manual-task-section {
-    margin-bottom: 1.5rem;
-  }
-  
-  .manual-task-input {
-    gap: 0.75rem;
-  }
-  
-  .manual-task-input input {
-    padding: 0.875rem;
-    font-size: 1rem;
-    border-radius: 0.75rem;
-  }
-  
-  .manual-task-input button {
-    padding: 0.875rem;
-    min-width: 44px;
-    min-height: 44px;
-    border-radius: 0.75rem;
-  }
-  
-  .selected-tasks-list {
-    max-height: 150px;
-    gap: 0.75rem;
-  }
-  
-  .selected-task-item {
-    padding: 0.875rem;
-    gap: 0.875rem;
-    border-radius: 0.75rem;
-    font-size: 0.9rem;
-  }
-  
-  .task-number {
-    font-size: 0.8rem;
-    min-width: 1.75rem;
-  }
-  
-  .remove-task {
-    padding: 0.5rem;
-    min-width: 32px;
-    min-height: 32px;
-    border-radius: 0.5rem;
-  }
-  
-  .creator-actions {
-    padding: 1rem 1.5rem;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .create-btn,
-  .cancel-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-    min-height: 44px;
-    border-radius: 0.75rem;
-  }
-  
-  .custom-modes-section {
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .custom-mode-modal {
-    padding: 2px;
-    align-items: flex-start;
-    padding-top: 10px;
-    z-index: 9999;
-  }
-  
-  .custom-mode-creator {
-    width: 98vw;
-    max-height: calc(100vh - 20px);
-    border-radius: 0.5rem;
-    margin-top: 0;
-    z-index: 10000;
-  }
-  
-  .creator-header {
-    padding: 0.875rem 1rem;
-  }
-  
-  .creator-header h2 {
-    font-size: 1.125rem;
-  }
-  
-  .close-creator {
-    padding: 0.5rem;
-    min-width: 36px;
-    min-height: 36px;
-  }
-  
-  .creator-content {
-    padding: 0.875rem 1rem;
-    max-height: calc(100vh - 160px);
-  }
-  
-  .basic-info-section {
-    margin-bottom: 1.25rem;
-  }
-  
-  .input-group label {
-    font-size: 0.875rem;
-    margin-bottom: 0.5rem;
-  }
-  
+/* 移动端响应式样式 */
+@media (max-width: 767px) {
   .input-group input {
     padding: 1rem;
     font-size: 1rem;
   }
   
-  .task-selection-section h3 {
-    font-size: 1rem;
-    margin-bottom: 0.875rem;
-  }
-  
-  .task-selection-section h4 {
-    font-size: 0.9rem;
-    margin-bottom: 0.625rem;
-  }
-  
   .load-tasks-btn {
+    width: 100%;
     padding: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .mode-tasks-section {
-    padding: 0.75rem;
-  }
-  
-  .mode-section-title {
-    font-size: 0.825rem;
-  }
-  
-  .tasks-list {
-    max-height: 120px;
+    font-size: 1rem;
   }
   
   .task-item {
-    padding: 0.875rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.875rem;
+    min-height: 44px;
   }
   
   .manual-task-input {
@@ -2939,45 +2754,13 @@ main#app::-webkit-scrollbar {
     min-height: 48px;
   }
   
-  .selected-tasks-list {
-    max-height: 120px;
-  }
-  
   .selected-task-item {
-    padding: 1rem 0.875rem;
-    font-size: 0.875rem;
-  }
-  
-  .task-number {
-    font-size: 0.75rem;
-    min-width: 2rem;
+    padding: 1rem;
   }
   
   .remove-task {
-    padding: 0.625rem;
+    padding: 0.5rem;
     min-width: 36px;
     min-height: 36px;
-  }
-  
-  .creator-actions {
-    padding: 0.875rem 1rem;
-  }
-  
-  .create-btn,
-  .cancel-btn {
-    padding: 1rem;
-    font-size: 1rem;
-    min-height: 48px;
-  }
-  
-  .custom-mode-item {
-    flex-direction: column;
-    text-align: center;
-    padding: 1rem;
-  }
-  
-  .custom-mode-item .mode-icon-container {
-    margin-right: 0;
-    margin-bottom: 0.75rem;
   }
 }
