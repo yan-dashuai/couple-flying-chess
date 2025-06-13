@@ -1,4 +1,19 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
 export default function StructuredData() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // 如果不是客户端，返回占位符
+  if (!isClient) {
+    return null
+  }
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Product",

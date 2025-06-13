@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import "./seo-styles.css"
 import StructuredData from "./structured-data"
+import Analytics from "./analytics"
 
 export const metadata: Metadata = {
   title: {
@@ -105,27 +106,7 @@ export default function RootLayout({
         <meta name="MobileOptimized" content="width" />
         <meta name="HandheldFriendly" content="true" />
         
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2KTSBL1MK"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-J2KTSBL1MK');
-        
-        // 百度统计
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?your-baidu-analytics-id";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-      `,
-          }}
-        />
+        <Analytics />
       </head>
       <body>{children}</body>
     </html>
