@@ -600,9 +600,13 @@ export default function CoupleLudoGame() {
               <div className="main-title-area">
                 <div className="game-title-main">{translations.game.title}</div>
                 <div className="game-subtitle-main">{translations.game.subtitle}</div>
-                {/* 在这里添加语言选择器 */}
                 <div className="title-language-selector">
-                  <LanguageSelector currentLanguage={language} onLanguageChange={handleLanguageChange} />
+                  <LanguageSelector 
+                    currentLanguage={language} 
+                    onLanguageChange={handleLanguageChange} 
+                    showGithub={true}
+                    className="title"
+                  />
                 </div>
               </div>
             </div>

@@ -506,8 +506,8 @@ main#app::-webkit-scrollbar {
 }
 
 .game-container.blue-turn {
-  border: 3px solid #4ecdc4;
-  box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+  border: 3px solid #3498db;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
 }
 
 .header {
@@ -531,7 +531,7 @@ main#app::-webkit-scrollbar {
 }
 
 .header.blue-turn {
-  background: linear-gradient(135deg, #4ecdc4, #6bcf8f);
+  background: linear-gradient(135deg, #3498db, #5dade2);
 }
 
 .back-button {
@@ -603,12 +603,12 @@ main#app::-webkit-scrollbar {
 }
 
 .button.blue {
-  background: linear-gradient(135deg, #4ecdc4, #6bcf8f);
-  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+  background: linear-gradient(135deg, #3498db, #5dade2);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
 }
 
 .button.blue:hover:not(:disabled) {
-  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.5);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
 }
 
 .board-container {
@@ -720,26 +720,14 @@ main#app::-webkit-scrollbar {
 }
 
 .cell-number {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  font-size: 0.5rem;
-  color: #666;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 6px;
-  padding: 1px 3px;
-  z-index: 2;
-  min-width: 12px;
-  text-align: center;
-  font-weight: bold;
+  display: none; /* 隐藏序号标识 */
 }
 
 .cell.start .cell-number,
 .cell.end .cell-number,
 .cell.star .cell-number,
 .cell.trap .cell-number {
-  color: white;
-  background: rgba(0, 0, 0, 0.6);
+  display: none; /* 这些规则不再需要，因为序号已被隐藏 */
 }
 
 .player {
@@ -771,7 +759,7 @@ main#app::-webkit-scrollbar {
 }
 
 .player.blue {
-  background: linear-gradient(135deg, #4ecdc4, #26d0ce);
+  background: linear-gradient(135deg, #3498db, #2980b9);
 }
 
 .player.red.stacked {
@@ -815,8 +803,8 @@ main#app::-webkit-scrollbar {
 }
 
 .dice-area.blue-turn {
-  background: rgba(78, 205, 196, 0.1);
-  border: 2px solid rgba(78, 205, 196, 0.3);
+  background: rgba(52, 152, 219, 0.1);
+  border: 2px solid rgba(52, 152, 219, 0.3);
 }
 
 .dice {
@@ -841,8 +829,8 @@ main#app::-webkit-scrollbar {
 }
 
 .dice.blue-turn {
-  border-color: #4ecdc4;
-  color: #26d0ce;
+  border-color: #3498db;
+  color: #2980b9;
 }
 
 .modal {
@@ -888,9 +876,9 @@ main#app::-webkit-scrollbar {
 }
 
 .task-card.blue-executor {
-  background: linear-gradient(135deg, #e6f7f7, #f0fffe);
-  border-color: #4ecdc4;
-  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+  background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+  border-color: #3498db;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 .task-title {
@@ -903,7 +891,7 @@ main#app::-webkit-scrollbar {
   color: #ff6b6b;
 }
 .task-card.blue-executor .task-title {
-  color: #4ecdc4;
+  color: #3498db;
 }
 
 .executor {
@@ -925,10 +913,10 @@ main#app::-webkit-scrollbar {
 }
 
 .executor.blue {
-  background: linear-gradient(135deg, #4ecdc4, #6bcf8f);
+  background: linear-gradient(135deg, #3498db, #5dade2);
   color: white;
-  border-color: #26d0ce;
-  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+  border-color: #2980b9;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
 }
 
 .task-description {
@@ -947,7 +935,7 @@ main#app::-webkit-scrollbar {
 }
 
 .task-card.blue-executor .task-description {
-  border-left-color: #4ecdc4;
+  border-left-color: #3498db;
 }
 
 .task-buttons {
@@ -1024,10 +1012,10 @@ main#app::-webkit-scrollbar {
 
 .path-line {
   position: absolute;
-  background: linear-gradient(90deg, rgba(78, 205, 196, 0.5), rgba(255, 107, 107, 0.5));
-  height: 5px;
-  border-radius: 3px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg, rgba(52, 152, 219, 0.8), rgba(255, 107, 107, 0.8));
+  height: 4px;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   animation: path-glow 2.5s infinite alternate;
 }
 
@@ -1158,11 +1146,12 @@ main#app::-webkit-scrollbar {
 
 @keyframes path-glow {
   0% {
-    opacity: 0.7;
+    opacity: 0.8;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
   }
   100% {
     opacity: 1;
-    box-shadow: 0 0 8px rgba(100, 150, 200, 0.5);
+    box-shadow: 0 0 12px rgba(52, 152, 219, 0.6), 0 0 20px rgba(255, 107, 107, 0.4);
   }
 }
 
@@ -1228,7 +1217,7 @@ main#app::-webkit-scrollbar {
 
 .task-card.blue-executor .reward-success {
   background: linear-gradient(135deg, #e6f7f7, #cceeee);
-  color: #006666;
+  color: #3498db;
   border-color: #cceeee;
 }
 
@@ -1466,4 +1455,106 @@ main#app::-webkit-scrollbar {
   .seo-title {
     font-size: 1.5rem;
   }
+}
+
+/* 语言选择器样式 - 简化版本 */
+.language-selector-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.language-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.language-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.language-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.language-flag {
+  display: block;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* 首页标题区域的语言选择器样式 - 简化版本 */
+.title-language-selector {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.title-language-selector .language-selector-buttons {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+.title-language-selector .language-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.title-language-selector .language-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.title-language-selector .language-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+/* GitHub链接样式 */
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.github-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.title-github-link {
+  margin-left: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.title-github-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
 }
