@@ -199,30 +199,89 @@ export default function CoupleLudoGame() {
     [redPosition, bluePosition, checkSpecialEvents],
   )
 
+  const movePlayerToEndAndBack = useCallback(
+    (endPosition: number, finalPosition: number, player: PlayerColor, totalSteps: number) => {
+      const startPosition = player === "red" ? redPosition : bluePosition
+      let currentStep = 0
+      let currentPos = startPosition
+      let hasReachedEnd = false
+      
+      const step = () => {
+        if (currentStep >= totalSteps) {
+          // 移动完成，检查最终位置
+          if (finalPosition === endPosition) {
+            // 最终位置在终点，玩家获胜
+            setTimeout(() => {
+              setWinner(player)
+              setGameState("win")
+              setIsMoving(false)
+            }, 300)
+          } else {
+            // 最终位置不在终点，继续游戏
+            checkSpecialEvents(finalPosition, player)
+          }
+          return
+        }
+        
+        currentStep++
+        
+        // 先向终点移动
+        if (!hasReachedEnd) {
+          currentPos++
+          if (currentPos >= endPosition) {
+            hasReachedEnd = true
+            currentPos = endPosition
+          }
+        } else {
+          // 已到达终点，开始后退
+          if (currentPos > finalPosition) {
+            currentPos--
+          }
+        }
+        
+        if (player === "red") setRedPosition(currentPos)
+        else setBluePosition(currentPos)
+        
+        setTimeout(step, 300)
+      }
+      
+      step()
+    },
+    [redPosition, bluePosition, checkSpecialEvents],
+  )
+
   const movePlayer = useCallback(
     (steps: number) => {
       const currentPos = currentPlayer === "red" ? redPosition : bluePosition
       const maxPosition = boardPath.length - 1
       let targetPosition = currentPos + steps
 
-      // 如果超出终点，需要反弹回来
-      if (targetPosition > maxPosition) {
-        const overshoot = targetPosition - maxPosition
-        targetPosition = maxPosition - overshoot
-        // 确保不会反弹到负数位置
-        targetPosition = Math.max(0, targetPosition)
-      }
-
-      setIsMoving(true)
-      setGameState("moving")
-
-      if (targetPosition === currentPos) {
-        checkSpecialEvents(targetPosition, currentPlayer)
+      // 如果正好到达或超出终点，需要特殊处理
+      if (targetPosition >= maxPosition) {
+        if (targetPosition === maxPosition) {
+          // 正好到达终点，直接移动到终点
+          setIsMoving(true)
+          setGameState("moving")
+          movePlayerStep(targetPosition, currentPlayer)
+        } else {
+          // 超过终点，需要先到终点再退回多余步数
+          const overshoot = targetPosition - maxPosition
+          const finalPosition = maxPosition - overshoot
+          // 确保不会退到负数位置
+          const safePosition = Math.max(0, finalPosition)
+          
+          setIsMoving(true)
+          setGameState("moving")
+          movePlayerToEndAndBack(maxPosition, safePosition, currentPlayer, steps)
+        }
       } else {
+        // 正常移动
+        setIsMoving(true)
+        setGameState("moving")
         movePlayerStep(targetPosition, currentPlayer)
       }
     },
-    [currentPlayer, redPosition, bluePosition, boardPath.length, movePlayerStep, checkSpecialEvents],
+    [currentPlayer, redPosition, bluePosition, boardPath.length, movePlayerStep, movePlayerToEndAndBack],
   )
 
   const rollDice = () => {
