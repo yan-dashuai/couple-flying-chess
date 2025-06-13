@@ -52,6 +52,40 @@
       "description": "随机组合各种模式"
     }
   },
+  "customMode": {
+    "title": "自定义模式",
+    "description": "创建专属于你们的游戏模式",
+    "create": "创建模式",
+    "edit": "编辑",
+    "delete": "删除",
+    "deleteConfirm": "确定要删除这个自定义模式吗？",
+    "creator": {
+      "title": "创建自定义模式",
+      "close": "关闭",
+      "basicInfo": "基本信息",
+      "modeName": "模式名称",
+      "modeDescription": "模式描述",
+      "modeNamePlaceholder": "输入模式名称",
+      "modeDescriptionPlaceholder": "描述这个模式的特色",
+      "taskSelection": "添加任务",
+      "fromExistingModes": "从现有模式中选择任务",
+      "loadTasks": "加载所有模式任务",
+      "loading": "加载中...",
+      "manualAdd": "手动添加任务",
+      "manualAddPlaceholder": "输入自定义任务",
+      "selectedTasks": "已选择的任务",
+      "taskCount": "个任务",
+      "createButton": "创建模式",
+      "cancel": "取消",
+      "nameRequired": "请输入模式名称",
+      "tasksRequired": "请至少添加一个任务"
+    },
+    "messages": {
+      "createSuccess": "自定义模式创建成功！",
+      "deleteSuccess": "自定义模式已删除",
+      "loadTasksError": "加载任务失败，请重试"
+    }
+  },
   "board": {
     "start": "起点",
     "end": "终点",

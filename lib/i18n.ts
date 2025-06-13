@@ -36,6 +36,40 @@ export interface Translations {
     intimate: { name: string; description: string }
     mixed: { name: string; description: string }
   }
+  customMode: {
+    title: string
+    description: string
+    create: string
+    edit: string
+    delete: string
+    deleteConfirm: string
+    creator: {
+      title: string
+      close: string
+      basicInfo: string
+      modeName: string
+      modeDescription: string
+      modeNamePlaceholder: string
+      modeDescriptionPlaceholder: string
+      taskSelection: string
+      fromExistingModes: string
+      loadTasks: string
+      loading: string
+      manualAdd: string
+      manualAddPlaceholder: string
+      selectedTasks: string
+      taskCount: string
+      createButton: string
+      cancel: string
+      nameRequired: string
+      tasksRequired: string
+    }
+    messages: {
+      createSuccess: string
+      deleteSuccess: string
+      loadTasksError: string
+    }
+  }
   board: {
     start: string
     end: string

@@ -52,6 +52,40 @@
       "description": "Random combination of all modes"
     }
   },
+  "customMode": {
+    "title": "Custom Mode",
+    "description": "Create your own unique game mode",
+    "create": "Create Mode",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this custom mode?",
+    "creator": {
+      "title": "Create Custom Mode",
+      "close": "Close",
+      "basicInfo": "Basic Information",
+      "modeName": "Mode Name",
+      "modeDescription": "Mode Description",
+      "modeNamePlaceholder": "Enter mode name",
+      "modeDescriptionPlaceholder": "Describe the unique features of this mode",
+      "taskSelection": "Add Tasks",
+      "fromExistingModes": "Select from existing modes",
+      "loadTasks": "Load all mode tasks",
+      "loading": "Loading...",
+      "manualAdd": "Add custom task",
+      "manualAddPlaceholder": "Enter custom task",
+      "selectedTasks": "Selected tasks",
+      "taskCount": "tasks",
+      "createButton": "Create Mode",
+      "cancel": "Cancel",
+      "nameRequired": "Please enter a mode name",
+      "tasksRequired": "Please add at least one task"
+    },
+    "messages": {
+      "createSuccess": "Custom mode created successfully!",
+      "deleteSuccess": "Custom mode deleted",
+      "loadTasksError": "Failed to load tasks, please try again"
+    }
+  },
   "board": {
     "start": "Start",
     "end": "Finish",

@@ -19,13 +19,19 @@ import {
   Lock,
   Shuffle,
   ArrowLeft,
+  Plus,
+  Trash2,
+  Edit,
+  Save,
+  X,
+  Check,
 } from "lucide-react"
 import type { JSX } from "react/jsx-runtime"
 import { type Language, type Translations, loadTranslations, interpolate } from "@/lib/i18n"
 import LanguageSelector from "./language-selector"
 
-type GameState = "start" | "playing" | "task" | "win" | "winTask" | "moving"
-type GameMode = "normal" | "love" | "couple" | "advanced" | "intimate" | "mixed"
+type GameState = "start" | "playing" | "task" | "win" | "winTask" | "moving" | "customMode"
+type GameMode = "normal" | "love" | "couple" | "advanced" | "intimate" | "mixed" | "custom"
 type PlayerColor = "red" | "blue"
 type TaskType = "star" | "trap" | "collision"
 
@@ -38,6 +44,20 @@ interface CurrentTask {
 interface WinTaskOption {
   id: number
   description: string
+}
+
+interface CustomMode {
+  id: string
+  name: string
+  description: string
+  tasks: string[]
+  createdAt: number
+}
+
+interface TaskSource {
+  mode: GameMode
+  taskIndex: number
+  task: string
 }
 
 // Shuffle function (Fisher-Yates)
@@ -58,6 +78,7 @@ const gameModeIcons = {
   advanced: Flame,
   intimate: Lock,
   mixed: Shuffle,
+  custom: Plus,
 }
 
 const gameModeColors = {
@@ -67,6 +88,7 @@ const gameModeColors = {
   advanced: "from-red-400 to-red-600",
   intimate: "from-gray-700 to-gray-900",
   mixed: "from-indigo-400 via-purple-500 to-pink-500",
+  custom: "from-green-400 to-green-600",
 }
 
 const gameModeEmojis = {
@@ -76,6 +98,7 @@ const gameModeEmojis = {
   advanced: "🔥",
   intimate: "🔒",
   mixed: "🎲",
+  custom: "🎨",
 }
 
 export default function CoupleLudoGame() {
@@ -98,6 +121,17 @@ export default function CoupleLudoGame() {
   const [translations, setTranslations] = useState<Translations | null>(null)
   const [winTaskOptions, setWinTaskOptions] = useState<WinTaskOption[]>([])
   const [selectedWinTask, setSelectedWinTask] = useState<WinTaskOption | null>(null)
+  const [customModes, setCustomModes] = useState<CustomMode[]>([])
+  const [currentCustomMode, setCurrentCustomMode] = useState<CustomMode | null>(null)
+  const [showCustomModeCreator, setShowCustomModeCreator] = useState(false)
+  const [newCustomMode, setNewCustomMode] = useState<{ name: string; description: string; tasks: string[] }>({ 
+    name: '', 
+    description: '', 
+    tasks: [] 
+  })
+  const [availableModeTasks, setAvailableModeTasks] = useState<Record<GameMode, string[]>>({} as Record<GameMode, string[]>)
+  const [selectedTasks, setSelectedTasks] = useState<{ [key: string]: boolean }>({})
+  const [manualTask, setManualTask] = useState('')
 
   useEffect(() => {
     const path = createBoardPath()
@@ -105,10 +139,60 @@ export default function CoupleLudoGame() {
 
     // Load initial language
     loadTranslations(language).then(setTranslations)
+    
+    // Load custom modes from localStorage
+    loadCustomModes()
   }, [])
 
   useEffect(() => {
     loadTranslations(language).then(setTranslations)
+  }, [language])
+
+  // Load custom modes from localStorage
+  const loadCustomModes = useCallback(() => {
+    try {
+      const saved = localStorage.getItem('customModes')
+      if (saved) {
+        setCustomModes(JSON.parse(saved))
+      }
+    } catch (error) {
+      console.error('Error loading custom modes:', error)
+    }
+  }, [])
+
+  // Save custom modes to localStorage
+  const saveCustomModes = useCallback((modes: CustomMode[]) => {
+    try {
+      localStorage.setItem('customModes', JSON.stringify(modes))
+      setCustomModes(modes)
+    } catch (error) {
+      console.error('Error saving custom modes:', error)
+    }
+  }, [])
+
+  // Load all tasks for selection
+  const loadAllTasksForSelection = useCallback(async () => {
+    const modes: GameMode[] = ["normal", "love", "couple", "advanced", "intimate", "mixed"]
+    const tasks: Record<GameMode, string[]> = {} as Record<GameMode, string[]>
+    
+    for (const mode of modes) {
+      try {
+        let response = await fetch(`/tasks/${mode}-${language}.json`)
+        if (!response.ok && language !== "zh") {
+          response = await fetch(`/tasks/${mode}.json`)
+        }
+        if (response.ok) {
+          tasks[mode] = await response.json()
+        } else {
+          tasks[mode] = []
+        }
+      } catch (error) {
+        console.error(`Error loading tasks for ${mode}:`, error)
+        tasks[mode] = []
+      }
+    }
+    
+    setAvailableModeTasks(tasks)
   }, [language])
 
   const loadTasks = useCallback(
@@ -501,23 +585,111 @@ export default function CoupleLudoGame() {
 
   const startGame = async (mode: GameMode) => {
     setGameMode(mode)
-    await loadTasks(mode, language)
-
-    const newPath = createBoardPath()
-    setBoardPath(newPath)
-
     setGameState("playing")
+    setCurrentPlayer("red")
     setRedPosition(0)
     setBluePosition(0)
-    setCurrentPlayer("red")
     setDiceValue(null)
-    setWinner(null)
-    setIsMoving(false)
     setIsRolling(false)
+    setIsMoving(false)
+    setCurrentTask(null)
+    setTaskType(null)
+    setWinner(null)
+    setToast(null)
+    
+    if (mode === "custom") {
+      if (currentCustomMode && currentCustomMode.tasks.length > 0) {
+        setTaskQueue(shuffleArray([...currentCustomMode.tasks]))
+      } else {
+        setTaskQueue([])
+      }
+    } else {
+      await loadTasks(mode, language)
+    }
   }
+
+  // Create new custom mode
+  const createCustomMode = useCallback(() => {
+    if (newCustomMode.name.trim() && newCustomMode.tasks.length > 0) {
+      const customMode: CustomMode = {
+        id: Date.now().toString(),
+        name: newCustomMode.name.trim(),
+        description: newCustomMode.description.trim() || translations?.customMode.description || "自定义模式",
+        tasks: [...newCustomMode.tasks],
+        createdAt: Date.now(),
+      }
+      
+      const updatedModes = [...customModes, customMode]
+      saveCustomModes(updatedModes)
+      
+      // Reset form
+      setNewCustomMode({ name: '', description: '', tasks: [] })
+      setSelectedTasks({})
+      setManualTask('')
+      setShowCustomModeCreator(false)
+      
+      showToast(translations?.customMode.messages.createSuccess || "自定义模式创建成功！", "success")
+    }
+  }, [newCustomMode, customModes, saveCustomModes, translations])
+
+  // Delete custom mode
+  const deleteCustomMode = useCallback((modeId: string) => {
+    const updatedModes = customModes.filter(mode => mode.id !== modeId)
+    saveCustomModes(updatedModes)
+    showToast(translations?.customMode.messages.deleteSuccess || "自定义模式已删除", "success")
+  }, [customModes, saveCustomModes, translations])
+
+  // Add task from mode selection
+  const addTaskFromMode = useCallback((mode: GameMode, taskIndex: number) => {
+    const task = availableModeTasks[mode]?.[taskIndex]
+    if (task && !newCustomMode.tasks.includes(task)) {
+      setNewCustomMode(prev => ({
+        ...prev,
+        tasks: [...prev.tasks, task]
+      }))
+    }
+  }, [availableModeTasks, newCustomMode.tasks])
+
+  // Add manual task
+  const addManualTask = useCallback(() => {
+    if (manualTask.trim() && !newCustomMode.tasks.includes(manualTask.trim())) {
+      setNewCustomMode(prev => ({
+        ...prev,
+        tasks: [...prev.tasks, manualTask.trim()]
+      }))
+      setManualTask('')
+    }
+  }, [manualTask, newCustomMode.tasks])
+
+  // Remove task from custom mode
+  const removeTaskFromCustomMode = useCallback((taskIndex: number) => {
+    setNewCustomMode(prev => ({
+      ...prev,
+      tasks: prev.tasks.filter((_, index) => index !== taskIndex)
+    }))
+  }, [])
+
+  // Show toast notification
+  const showToast = useCallback((message: string, type: "success" | "error") => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
+  }, [])
 
   const restartGame = () => {
     setGameState("start")
+    setGameMode("normal")
+    setCurrentPlayer("red")
+    setRedPosition(0)
+    setBluePosition(0)
+    setDiceValue(null)
+    setIsRolling(false)
+    setIsMoving(false)
+    setCurrentTask(null)
+    setTaskType(null)
+    setWinner(null)
+    setToast(null)
+    setCurrentCustomMode(null)
+    setShowCustomModeCreator(false)
   }
 
   const handleLanguageChange = async (newLanguage: Language) => {
@@ -676,11 +848,9 @@ export default function CoupleLudoGame() {
                   className={`mode-card ${key === "intimate" ? "intimate-card" : ""}`}
                   onClick={() => !isLoadingTasks && startGame(key as GameMode)}
                 >
-                  <div className={`mode-gradient bg-gradient-to-br ${gameModeColors[key as GameMode]}`}>
-                    <div className="mode-icon-container">
-                      <IconComponent size={24} className="mode-icon" />
-                      <span className="mode-emoji">{gameModeEmojis[key as GameMode]}</span>
-                    </div>
+                  <div className="mode-icon-container">
+                    <IconComponent size={24} className="mode-icon" />
+                    <span className="mode-emoji">{gameModeEmojis[key as GameMode]}</span>
                   </div>
 
                   <div className="mode-info">
@@ -697,6 +867,52 @@ export default function CoupleLudoGame() {
                 </div>
               )
             })}
+            
+            {/* 已创建的自定义模式卡片 */}
+            {customModes.map((mode) => (
+              <div
+                key={mode.id}
+                className="mode-card"
+                onClick={() => {
+                  setCurrentCustomMode(mode)
+                  startGame("custom")
+                }}
+              >
+                <div className="mode-icon-container">
+                  <Edit size={24} className="mode-icon" />
+                  <span className="mode-emoji">🎨</span>
+                  <button
+                    className="delete-custom-mode-btn"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deleteCustomMode(mode.id)
+                    }}
+                    title={translations.customMode.delete}
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+                <div className="mode-info">
+                  <h3 className="mode-title">{mode.name}</h3>
+                  <p className="mode-desc">{mode.description}</p>
+                </div>
+              </div>
+            ))}
+            
+            {/* 创建自定义模式卡片 */}
+            <div
+              className="mode-card"
+              onClick={() => setShowCustomModeCreator(true)}
+            >
+              <div className="mode-icon-container">
+                <Plus size={24} className="mode-icon" />
+                <span className="mode-emoji">{gameModeEmojis.custom}</span>
+              </div>
+              <div className="mode-info">
+                <h3 className="mode-title">{translations.customMode.title}</h3>
+                <p className="mode-desc">{translations.customMode.description}</p>
+              </div>
+            </div>
           </div>
 
           <div className="game-tips">
@@ -713,6 +929,170 @@ export default function CoupleLudoGame() {
               <span>{translations.tips.improveRelation}</span>
             </div>
           </div>
+
+          {/* 自定义模式创建器 */}
+          {showCustomModeCreator && (
+            <div className="modal custom-mode-modal">
+              <div className="custom-mode-creator">
+                <div className="creator-header">
+                  <h2>{translations.customMode.creator.title}</h2>
+                  <button 
+                    className="close-creator"
+                    onClick={() => {
+                      setShowCustomModeCreator(false)
+                      setNewCustomMode({ name: '', description: '', tasks: [] })
+                      setSelectedTasks({})
+                      setManualTask('')
+                    }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="creator-content">
+                  {/* 基本信息 */}
+                  <div className="basic-info-section">
+                    <div className="input-group">
+                      <label>{translations.customMode.creator.modeName}</label>
+                      <input
+                        type="text"
+                        value={newCustomMode.name}
+                        onChange={(e) => setNewCustomMode(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder={translations.customMode.creator.modeNamePlaceholder}
+                        maxLength={20}
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label>{translations.customMode.creator.modeDescription}</label>
+                      <input
+                        type="text"
+                        value={newCustomMode.description}
+                        onChange={(e) => setNewCustomMode(prev => ({ ...prev, description: e.target.value }))}
+                        placeholder={translations.customMode.creator.modeDescriptionPlaceholder}
+                        maxLength={50}
+                      />
+                    </div>
+                  </div>
+
+                  {/* 任务选择 */}
+                  <div className="task-selection-section">
+                    <h3>{translations.customMode.creator.taskSelection}</h3>
+                    
+                    {/* 从组合模式中选择 */}
+                    <div className="mode-task-selection">
+                      <h4>{translations.customMode.creator.fromExistingModes}</h4>
+                      <button 
+                        className="load-tasks-btn"
+                        onClick={loadAllTasksForSelection}
+                        disabled={isLoadingTasks}
+                      >
+                        {isLoadingTasks ? translations.customMode.creator.loading : translations.customMode.creator.loadTasks}
+                      </button>
+                      
+                      {Object.keys(availableModeTasks).length > 0 && (
+                        <div className="mode-tasks-grid">
+                          {(["normal", "love", "couple", "advanced", "intimate", "mixed"] as GameMode[]).map((mode) => (
+                            <div key={mode} className="mode-tasks-section">
+                              <h5 className="mode-section-title">
+                                {(translations.modes as any)[mode]?.name || mode} ({availableModeTasks[mode]?.length || 0})
+                              </h5>
+                              <div className="tasks-list">
+                                {availableModeTasks[mode]?.map((task, index) => (
+                                  <div 
+                                    key={`${mode}-${index}`}
+                                    className={`task-item ${newCustomMode.tasks.includes(task) ? 'selected' : ''}`}
+                                    onClick={() => {
+                                      if (newCustomMode.tasks.includes(task)) {
+                                        setNewCustomMode(prev => ({
+                                          ...prev,
+                                          tasks: prev.tasks.filter(t => t !== task)
+                                        }))
+                                      } else {
+                                        addTaskFromMode(mode, index)
+                                      }
+                                    }}
+                                  >
+                                    <span className="task-text">{task}</span>
+                                    {newCustomMode.tasks.includes(task) && <Check size={16} />}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 手动添加任务 */}
+                    <div className="manual-task-section">
+                      <h4>{translations.customMode.creator.manualAdd}</h4>
+                      <div className="manual-task-input">
+                        <input
+                          type="text"
+                          value={manualTask}
+                          onChange={(e) => setManualTask(e.target.value)}
+                          placeholder={translations.customMode.creator.manualAddPlaceholder}
+                          maxLength={100}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              addManualTask()
+                            }
+                          }}
+                        />
+                        <button 
+                          onClick={addManualTask}
+                          disabled={!manualTask.trim() || newCustomMode.tasks.includes(manualTask.trim())}
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 已选择的任务列表 */}
+                    <div className="selected-tasks-section">
+                      <h4>{translations.customMode.creator.selectedTasks} ({newCustomMode.tasks.length})</h4>
+                      <div className="selected-tasks-list">
+                        {newCustomMode.tasks.map((task, index) => (
+                          <div key={index} className="selected-task-item">
+                            <span className="task-number">{index + 1}.</span>
+                            <span className="task-text">{task}</span>
+                            <button 
+                              onClick={() => removeTaskFromCustomMode(index)}
+                              className="remove-task"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="creator-actions">
+                  <button 
+                    className="create-btn"
+                    onClick={createCustomMode}
+                    disabled={!newCustomMode.name.trim() || newCustomMode.tasks.length === 0}
+                  >
+                    <Save size={16} />
+                    {translations.customMode.creator.createButton}
+                  </button>
+                  <button 
+                    className="cancel-btn"
+                    onClick={() => {
+                      setShowCustomModeCreator(false)
+                      setNewCustomMode({ name: '', description: '', tasks: [] })
+                      setSelectedTasks({})
+                      setManualTask('')
+                    }}
+                  >
+                    {translations.customMode.creator.cancel}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     )
@@ -725,7 +1105,11 @@ export default function CoupleLudoGame() {
           <ArrowLeft size={20} />
         </button>
         <span className="header-title">
-          {translations.game.title} - {translations.modes[gameMode].name}
+          {translations.game.title} - {
+            gameMode === "custom" 
+              ? (currentCustomMode?.name || "自定义模式")
+              : translations.modes[gameMode].name
+          }
         </span>
         <LanguageSelector currentLanguage={language} onLanguageChange={handleLanguageChange} />
       </div>
