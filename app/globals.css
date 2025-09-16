@@ -131,6 +131,72 @@ main#app::-webkit-scrollbar {
   z-index: 3; /* 提高z-index */
 }
 
+/* 新版本开发计划通知卡片样式 */
+.development-notice-card {
+  margin-top: 20px;
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.15) 0%, rgba(233, 69, 96, 0.1) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.2);
+  transition: all 0.3s ease;
+}
+
+.development-notice-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 107, 157, 0.3);
+  border-color: rgba(255, 107, 157, 0.5);
+}
+
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.notice-icon {
+  color: #ff6b9d;
+  filter: drop-shadow(0 2px 4px rgba(255, 107, 157, 0.3));
+}
+
+.notice-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.notice-content {
+  position: relative;
+}
+
+.notice-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.contact-email {
+  color: #ff6b9d;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.contact-email:hover {
+  color: #ff1744;
+  border-bottom-color: #ff1744;
+  text-shadow: 0 0 8px rgba(255, 23, 68, 0.4);
+}
+
 .game-logo {
   position: relative;
   display: flex;
@@ -2195,12 +2261,16 @@ main#app::-webkit-scrollbar {
   left: 0;
   width: 100vw;
   height: 100vh;
+  /* 使用动态视口高度，避免移动端（尤其 iOS Safari）底部工具栏遮挡 */
+  height: 100dvh;
   background-color: rgba(0, 0, 0, 0.95);
   display: flex;
   justify-content: center;
   align-items: flex-start;
   z-index: 999999;
   overflow: hidden;
+  /* 预留底部安全区，防止 Home 指示条或工具栏遮挡内容 */
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .custom-mode-creator {
@@ -2294,6 +2364,8 @@ main#app::-webkit-scrollbar {
   gap: 1rem;
   justify-content: flex-end;
   padding: 1rem 1.5rem;
+  /* 在移动端给底部操作区预留安全区，避免被系统工具栏遮挡 */
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
   background: rgba(255, 255, 255, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
