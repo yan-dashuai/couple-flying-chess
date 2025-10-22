@@ -980,8 +980,8 @@ export default function CoupleLudoGame() {
                   className={`mode-card ${key === "intimate" ? "intimate-card" : ""}`}
                   onClick={() => {
                     if (!isLoadingTasks) {
-                      // 普通版和恋爱版直接进入，其他模式需要激活码
-                      if (key === 'normal' || key === 'love') {
+                      // 只有普通版直接进入，其他模式需要激活码
+                      if (key === 'normal') {
                         startGame(key as GameMode)
                       } else {
                         openActivationModal(key as GameMode)
