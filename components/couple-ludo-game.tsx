@@ -864,13 +864,27 @@ export default function CoupleLudoGame() {
           <div className="development-notice-card">
             <div className="notice-header">
               <Sparkles size={20} className="notice-icon" />
-              <h3 className="notice-title">🚀 新版本开发计划</h3>
+              <h3 className="notice-title">✨ 应用更新与说明</h3>
             </div>
             <div className="notice-content">
-              <p className="notice-text">
-                最近一段时间打算开发新版：<strong>房间模式</strong>，不必在同一个手机操作；任务使用各自的题库，减少不适的任务，保证任务能符合大家的偏好；根据偏好，<strong>AI生成任务</strong>；无账号匿名游戏，数据存储在本地；目前的想法就这样，如果有好的提议可以发送邮件到 
-                <a href="mailto:lishuang1@gmx.com" className="contact-email">lishuang1@gmx.com</a>
-              </p>
+              <ul className="notice-list">
+                <li className="notice-item">
+                  <span className="notice-number">1.</span>
+                  <span className="notice-text">本应用永久免费更新</span>
+                </li>
+                <li className="notice-item">
+                  <span className="notice-number">2.</span>
+                  <span className="notice-text">由于进阶版内容过于<span style={{ color: '#ff6b9d' }}>**</span>，9.9元可永久免费使用所有进阶游戏内容</span>
+                </li>
+                <li className="notice-item">
+                  <span className="notice-number">3.</span>
+                  <span className="notice-text">支持自定义惩罚，游戏更快乐</span>
+                </li>
+                <li className="notice-item">
+                  <span className="notice-number">4.</span>
+                  <span className="notice-text">有任何问题/合作添加客服微信: <strong style={{ color: '#ff6b9d' }}>Yanyi8360</strong></span>
+                </li>
+              </ul>
             </div>
           </div>
           
@@ -922,7 +936,7 @@ export default function CoupleLudoGame() {
                       <strong style={{ color: '#ff6b9d' }}>9.9元</strong> 解锁全部进阶版功能
                     </p>
                     <p style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.6)', textAlign: 'center' }}>
-                      激活码获取联系客服微信: <strong>Yanyi8360</strong>
+                      激活码获取联系客服微信: <strong style={{ color: '#ff6b9d' }}>Yanyi8360</strong>
                     </p>
                   </div>
                   
