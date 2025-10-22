@@ -383,6 +383,35 @@ main#app::-webkit-scrollbar {
   animation: emoji-pulse 2s ease-in-out infinite;
 }
 
+.lock-icon {
+  color: white;
+  opacity: 1;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+  animation: lock-pulse 4s ease-in-out infinite;
+}
+
+@keyframes lock-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* 确保锁图标容器有适当的z-index，显示在所有元素上方 */
+.mode-lock-icon {
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.mode-lock-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.7) !important;
+}
+
 /* 激活码验证弹窗样式 */
 .activation-modal {
   position: fixed;

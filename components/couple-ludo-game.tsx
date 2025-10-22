@@ -136,6 +136,15 @@ export default function CoupleLudoGame() {
   const [activationCode, setActivationCode] = useState('')
   const [modeToActivate, setModeToActivate] = useState<GameMode | null>(null)
   const [activationError, setActivationError] = useState('')
+  const [activatedModes, setActivatedModes] = useState<Record<GameMode, boolean>>({
+    normal: true,  // 普通版默认激活
+    love: false,
+    couple: false,
+    advanced: false,
+    intimate: false,
+    mixed: false,
+    custom: false  // 自定义模式也需要激活
+  })
   
   // 激活码验证
   const validateActivationCode = () => {
@@ -143,6 +152,27 @@ export default function CoupleLudoGame() {
     if (activationCode === correctCode) {
       setActivationError('')
       setShowActivationModal(false)
+      
+      // 激活所有模式
+      const allActivatedModes: Record<GameMode, boolean> = {
+        normal: true,
+        love: true,
+        couple: true,
+        advanced: true,
+        intimate: true,
+        mixed: true,
+        custom: true
+      }
+      
+      setActivatedModes(allActivatedModes)
+      
+      // 保存到localStorage
+      try {
+        localStorage.setItem('activatedModes', JSON.stringify(allActivatedModes))
+      } catch (error) {
+        console.error('Error saving activated modes:', error)
+      }
+      
       if (modeToActivate) {
         startGame(modeToActivate)
       }
@@ -170,6 +200,16 @@ export default function CoupleLudoGame() {
     
     // Load custom modes from localStorage
     loadCustomModes()
+    
+    // Load activated modes from localStorage
+    const savedActivatedModes = localStorage.getItem('activatedModes')
+    if (savedActivatedModes) {
+      try {
+        setActivatedModes(prev => ({ ...prev, ...JSON.parse(savedActivatedModes) }))
+      } catch (error) {
+        console.error('Error loading activated modes:', error)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -882,7 +922,7 @@ export default function CoupleLudoGame() {
                 </li>
                 <li className="notice-item">
                   <span className="notice-number">4.</span>
-                  <span className="notice-text">有任何问题/合作添加客服微信: <strong style={{ color: '#ff6b9d' }}>Yanyi8360</strong></span>
+                  <span className="notice-text">激活码获取/合作代理添加客服微信: <strong style={{ color: '#ff6b9d' }}>Yanyi8360</strong></span>
                 </li>
               </ul>
             </div>
@@ -980,8 +1020,8 @@ export default function CoupleLudoGame() {
                   className={`mode-card ${key === "intimate" ? "intimate-card" : ""}`}
                   onClick={() => {
                     if (!isLoadingTasks) {
-                      // 只有普通版直接进入，其他模式需要激活码
-                      if (key === 'normal') {
+                      // 如果模式已激活，直接进入游戏；否则显示激活码弹窗
+                      if (activatedModes[key as GameMode]) {
                         startGame(key as GameMode)
                       } else {
                         openActivationModal(key as GameMode)
@@ -992,6 +1032,12 @@ export default function CoupleLudoGame() {
                   <div className="mode-icon-container">
                     <IconComponent size={24} className="mode-icon" />
                     <span className="mode-emoji">{gameModeEmojis[key as GameMode]}</span>
+                    {/* 为未激活的模式添加锁图标 - 放在模式图标的正上方 */}
+                    {!activatedModes[key as GameMode] && (
+                      <span className="mode-lock-icon" style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(255, 107, 157, 1)', borderRadius: '50%', padding: '6px', boxShadow: '0 2px 8px rgba(255, 107, 157, 0.6)' }}>
+                        <Lock size={18} className="lock-icon" strokeWidth={1.2} />
+                      </span>
+                    )}
                   </div>
 
                   <div className="mode-info">
@@ -1015,13 +1061,24 @@ export default function CoupleLudoGame() {
                 key={mode.id}
                 className="mode-card"
                 onClick={() => {
-                  setCurrentCustomMode(mode)
-                  startGame("custom")
+                  // 自定义模式也需要检查激活状态
+                  if (activatedModes.custom) {
+                    setCurrentCustomMode(mode)
+                    startGame("custom")
+                  } else {
+                    openActivationModal("custom")
+                  }
                 }}
               >
                 <div className="mode-icon-container">
                   <Edit size={24} className="mode-icon" />
                   <span className="mode-emoji">🎨</span>
+                  {/* 为未激活的自定义模式添加锁图标 - 放在模式图标的正上方 */}
+                    {!activatedModes.custom && (
+                      <span className="mode-lock-icon" style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(255, 107, 157, 1)', borderRadius: '50%', padding: '6px', boxShadow: '0 2px 8px rgba(255, 107, 157, 0.6)' }}>
+                        <Lock size={18} className="lock-icon" strokeWidth={1.2} />
+                      </span>
+                    )}
                   <button
                     className="delete-custom-mode-btn"
                     onClick={(e) => {
@@ -1043,11 +1100,24 @@ export default function CoupleLudoGame() {
             {/* 创建自定义模式卡片 */}
             <div
               className="mode-card"
-              onClick={() => setShowCustomModeCreator(true)}
+              onClick={() => {
+                // 创建自定义模式也需要检查激活状态
+                if (activatedModes.custom) {
+                  setShowCustomModeCreator(true)
+                } else {
+                  openActivationModal("custom")
+                }
+              }}
             >
               <div className="mode-icon-container">
                 <Plus size={24} className="mode-icon" />
                 <span className="mode-emoji">{gameModeEmojis.custom}</span>
+                {/* 为未激活的创建自定义模式按钮添加锁图标 - 放在模式图标的正上方 */}
+                  {!activatedModes.custom && (
+                    <span className="mode-lock-icon" style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(255, 107, 157, 1)', borderRadius: '50%', padding: '6px', boxShadow: '0 2px 8px rgba(255, 107, 157, 0.6)' }}>
+                      <Lock size={18} className="lock-icon" strokeWidth={1.2} />
+                    </span>
+                  )}
               </div>
               <div className="mode-info">
                 <h3 className="mode-title">{translations.customMode.title}</h3>
