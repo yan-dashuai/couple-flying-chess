@@ -348,6 +348,197 @@ main#app::-webkit-scrollbar {
   animation: emoji-pulse 2s ease-in-out infinite;
 }
 
+/* 激活码验证弹窗样式 */
+.activation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.activation-container {
+  background: linear-gradient(135deg, #4a4a6a 0%, #3d3d5c 100%);
+  border-radius: 20px;
+  padding: 0;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.activation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.activation-header h2 {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.close-activation {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-activation:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.activation-content {
+  padding: 20px;
+}
+
+.activation-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.activation-input-group {
+  margin-bottom: 15px;
+}
+
+.activation-input-group label {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.activation-input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.activation-input-group input:focus {
+  outline: none;
+  border-color: #ff6b9d;
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.activation-input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+.activation-error {
+  background: rgba(233, 69, 96, 0.2);
+  border: 1px solid rgba(233, 69, 96, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
+  color: #ff6b9d;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.activation-promo {
+  background: rgba(255, 107, 157, 0.1);
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.activation-promo p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.activation-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.activation-cancel-btn,
+.activation-confirm-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.activation-cancel-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.activation-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.activation-confirm-btn {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+}
+
+.activation-confirm-btn:hover {
+  background: linear-gradient(135deg, #ff85ad 0%, #ff4d4f 100%);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+  transform: translateY(-1px);
+}
+
+.activation-confirm-btn:active {
+  transform: translateY(0);
+}
+
+/* 移动设备优化 */
+@media (max-width: 480px) {
+  .activation-container {
+    margin: 0 10px;
+  }
+  
+  .activation-actions {
+    flex-direction: column;
+  }
+}
+
 .mode-info {
   flex: 1;
   position: relative;

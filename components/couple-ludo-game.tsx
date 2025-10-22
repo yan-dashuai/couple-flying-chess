@@ -132,6 +132,34 @@ export default function CoupleLudoGame() {
   const [availableModeTasks, setAvailableModeTasks] = useState<Record<GameMode, string[]>>({} as Record<GameMode, string[]>)
   const [selectedTasks, setSelectedTasks] = useState<{ [key: string]: boolean }>({})
   const [manualTask, setManualTask] = useState('')
+  const [showActivationModal, setShowActivationModal] = useState(false)
+  const [activationCode, setActivationCode] = useState('')
+  const [modeToActivate, setModeToActivate] = useState<GameMode | null>(null)
+  const [activationError, setActivationError] = useState('')
+  
+  // 激活码验证
+  const validateActivationCode = () => {
+    const correctCode = '222086'
+    if (activationCode === correctCode) {
+      setActivationError('')
+      setShowActivationModal(false)
+      if (modeToActivate) {
+        startGame(modeToActivate)
+      }
+      setActivationCode('')
+      setModeToActivate(null)
+    } else {
+      setActivationError(translations?.activation?.invalidCode || '激活码错误，请重试')
+    }
+  }
+  
+  // 打开激活码验证弹窗
+  const openActivationModal = (mode: GameMode) => {
+    setModeToActivate(mode)
+    setActivationCode('')
+    setActivationError('')
+    setShowActivationModal(true)
+  }
 
   useEffect(() => {
     const path = createBoardPath()
@@ -845,6 +873,82 @@ export default function CoupleLudoGame() {
               </p>
             </div>
           </div>
+          
+          {/* 激活码验证弹窗 */}
+          {showActivationModal && (
+            <div className="modal activation-modal">
+              <div className="activation-container">
+                <div className="activation-header">
+                  <h2>{translations?.activation?.title || '需要激活码'}</h2>
+                  <button 
+                    className="close-activation"
+                    onClick={() => {
+                      setShowActivationModal(false)
+                      setActivationCode('')
+                      setActivationError('')
+                      setModeToActivate(null)
+                    }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+                
+                <div className="activation-content">
+                  <p className="activation-description">
+                    {translations?.activation?.description || '此模式需要激活码才能使用'}
+                  </p>
+                  
+                  <div className="activation-input-group">
+                    <label htmlFor="activation-code">{translations?.activation?.inputLabel || '请输入激活码'}</label>
+                    <input
+                      id="activation-code"
+                      type="text"
+                      value={activationCode}
+                      onChange={(e) => setActivationCode(e.target.value)}
+                      placeholder={translations?.activation?.placeholder || '请输入6位激活码'}
+                      maxLength={6}
+                      onKeyPress={(e) => e.key === 'Enter' && validateActivationCode()}
+                    />
+                  </div>
+                  
+                  {activationError && (
+                    <div className="activation-error">
+                      {activationError}
+                    </div>
+                  )}
+                  
+                  <div className="activation-promo">
+                    <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.8)', textAlign: 'center', marginBottom: '10px' }}>
+                      <strong style={{ color: '#ff6b9d' }}>9.9元</strong> 解锁全部进阶版功能
+                    </p>
+                    <p style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.6)', textAlign: 'center' }}>
+                      激活码获取联系客服微信: <strong>Yanyi8360</strong>
+                    </p>
+                  </div>
+                  
+                  <div className="activation-actions">
+                    <button 
+                      className="activation-cancel-btn"
+                      onClick={() => {
+                        setShowActivationModal(false)
+                        setActivationCode('')
+                        setActivationError('')
+                        setModeToActivate(null)
+                      }}
+                    >
+                      {translations?.activation?.cancel || '取消'}
+                    </button>
+                    <button 
+                      className="activation-confirm-btn"
+                      onClick={validateActivationCode}
+                    >
+                      {translations?.activation?.confirm || '确认'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="start-content">
@@ -860,7 +964,16 @@ export default function CoupleLudoGame() {
                 <div
                   key={key}
                   className={`mode-card ${key === "intimate" ? "intimate-card" : ""}`}
-                  onClick={() => !isLoadingTasks && startGame(key as GameMode)}
+                  onClick={() => {
+                    if (!isLoadingTasks) {
+                      // 普通版和恋爱版直接进入，其他模式需要激活码
+                      if (key === 'normal' || key === 'love') {
+                        startGame(key as GameMode)
+                      } else {
+                        openActivationModal(key as GameMode)
+                      }
+                    }
+                  }}
                 >
                   <div className="mode-icon-container">
                     <IconComponent size={24} className="mode-icon" />
