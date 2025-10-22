@@ -824,7 +824,7 @@ export default function CoupleLudoGame() {
                   <LanguageSelector 
                     currentLanguage={language} 
                     onLanguageChange={handleLanguageChange} 
-                    showGithub={true}
+                    showGithub={false}
                     className="title"
                   />
                 </div>
