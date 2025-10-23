@@ -48,8 +48,8 @@ Disallow: /private/
 Crawl-delay: 3
 
 # 网站地图
-Sitemap: https://cpfly.top/sitemap.xml
-Sitemap: https://cpfly.top/api/sitemap
+Sitemap: https://yanyigege.dpdns.org/sitemap.xml
+Sitemap: https://yanyigege.dpdns.org/api/sitemap
 
 # 网站主页
-Host: https://cpfly.top
+Host: https://yanyigege.dpdns.org

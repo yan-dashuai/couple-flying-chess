@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://cpfly.top'
+  const baseUrl = 'https://yanyigege.dpdns.org'
   
   return {
     rules: [
@@ -34,4 +34,4 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,
   }
-} 
+}

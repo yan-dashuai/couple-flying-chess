@@ -901,22 +901,22 @@ export default function CoupleLudoGame() {
           </div>
           
           {/* 新版本开发计划通知卡片 */}
-          <div className="development-notice-card">
-            <div className="notice-header">
-              <Sparkles size={20} className="notice-icon" />
-              <h3 className="notice-title">✨ 应用更新与说明</h3>
+          <div className="development-notice-card" style={{ padding: '10px', marginBottom: '15px' }}>
+            <div className="notice-header" style={{ marginBottom: '5px' }}>
+              <Sparkles size={18} className="notice-icon" />
+              <h3 className="notice-title" style={{ fontSize: '1rem', margin: '0' }}>✨ 应用更新与说明</h3>
             </div>
             <div className="notice-content">
-              <ul className="notice-list">
-                <li className="notice-item">
+              <ul className="notice-list" style={{ padding: '0', margin: '0', fontSize: '0.9rem' }}>
+                <li className="notice-item" style={{ marginBottom: '3px' }}>
                   <span className="notice-number">1.</span>
                   <span className="notice-text">本应用永久免费更新</span>
                 </li>
-                <li className="notice-item">
+                <li className="notice-item" style={{ marginBottom: '3px' }}>
                   <span className="notice-number">2.</span>
                   <span className="notice-text">由于进阶版内容过于<span style={{ color: '#ff6b9d' }}>**</span>，9.9元可永久免费使用所有进阶游戏内容</span>
                 </li>
-                <li className="notice-item">
+                <li className="notice-item" style={{ marginBottom: '3px' }}>
                   <span className="notice-number">3.</span>
                   <span className="notice-text">支持自定义惩罚，游戏更快乐</span>
                 </li>

@@ -49,13 +49,13 @@ export default function StructuredData() {
       alternateName: ["Love Flight Chess", "ラブフライトチェス"],
     },
     category: "情侣桌游",
-    url: "https://cpfly.top",
+    url: "https://yanyigege.dpdns.org",
     offers: {
       "@type": "Offer",
       availability: "https://schema.org/InStock",
       price: "0",
       priceCurrency: "CNY",
-      url: "https://cpfly.top",
+      url: "https://yanyigege.dpdns.org",
       priceValidUntil: "2025-12-31",
     },
     aggregateRating: {

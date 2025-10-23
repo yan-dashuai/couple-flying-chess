@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cpfly.top'
+  const baseUrl = 'https://yanyigege.dpdns.org'
   
   return [
     {
@@ -59,4 +59,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
   ]
-} 
+}

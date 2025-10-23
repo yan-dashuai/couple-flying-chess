@@ -43,11 +43,11 @@ export const metadata: Metadata = {
       "情侣飞行棋游戏全集免费在线玩 - 最火爆的情侣互动游戏 | 手机版真心话大冒险",
     description:
       "【2025最新】情侣飞行棋游戏全集免费在线玩！融合经典飞行棋+真心话大冒险+情趣挑战，支持手机版、电脑版，情侣破冰神器，异地恋也能甜蜜互动！立即开玩最火爆的情侣游戏！",
-    url: "https://cpfly.top",
+    url: "https://yanyigege.dpdns.org",
     siteName: "爱情飞行棋 - 情侣游戏专家",
     images: [
       {
-        url: "https://cpfly.top/images/og-image.jpg",
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "情侣飞行棋游戏全集 - 免费在线情侣互动游戏",
@@ -61,14 +61,14 @@ export const metadata: Metadata = {
     title: "情侣飞行棋游戏全集免费在线玩 - 最火爆的情侣互动游戏",
     description:
       "【2025最新】情侣飞行棋游戏全集免费在线玩！融合经典飞行棋+真心话大冒险+情趣挑战，支持手机版、电脑版，立即开玩！",
-    images: ["https://cpfly.top/images/twitter-image.jpg"],
+    images: ["/images/twitter-image.jpg"],
   },
   alternates: {
-    canonical: "https://cpfly.top",
+    canonical: "https://yanyigege.dpdns.org",
     languages: {
-      "zh-CN": "https://cpfly.top",
-      en: "https://cpfly.top/en",
-      ja: "https://cpfly.top/ja",
+      "zh-CN": "https://yanyigege.dpdns.org",
+      en: "https://yanyigege.dpdns.org/en",
+      ja: "https://yanyigege.dpdns.org/ja",
     },
   },
   other: {
@@ -89,7 +89,7 @@ export default function RootLayout({
     <html lang="zh-CN">
       <head>
         <StructuredData />
-        <link rel="canonical" href="https://cpfly.top" />
+        <link rel="canonical" href="https://yanyigege.dpdns.org" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" href="/images/logo.png" />
